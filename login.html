@@ -1,18 +1,1 @@
-<!doctype html>
-<html lang="en">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Login - Sa7hil</title><link rel="stylesheet" href="style.css"></head>
-<body>
-<main class="auth">
-  <section class="card auth-card">
-    <img src="logo.png" class="auth-logo" alt="Sa7hil">
-    <h1>Welcome back</h1>
-    <p>Login to your Sa7hil account.</p>
-    <input id="email" type="email" placeholder="Email">
-    <input id="password" type="password" placeholder="Password">
-    <button class="btn" onclick="demoLogin()">Login</button>
-    <p class="muted">For production, connect Firebase Authentication in <code>script.js</code>.</p>
-  </section>
-</main>
-<script src="script.js"></script>
-</body>
-</html>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Login - Sa7hil</title><link rel="stylesheet" href="style.css"></head><body><main class="auth"><section class="card auth-card"><img src="logo.png" class="auth-logo" alt="Sa7hil"><h1>Sa7hil Campaign</h1><input id="email" type="email" placeholder="Email"><input id="password" type="password" placeholder="Password"><button class="btn" id="login">Login</button><button class="btn secondary" id="signup">Create Account</button><p id="msg" class="muted"></p></section></main><script type="module">import{auth,signInWithEmailAndPassword,createUserWithEmailAndPassword}from"./firebase.js";const e=()=>email.value.trim(),p=()=>password.value;login.onclick=async()=>{try{await signInWithEmailAndPassword(auth,e(),p());location.href="dashboard.html"}catch(x){msg.textContent=x.message}};signup.onclick=async()=>{try{await createUserWithEmailAndPassword(auth,e(),p());location.href="dashboard.html"}catch(x){msg.textContent=x.message}};</script></body></html>

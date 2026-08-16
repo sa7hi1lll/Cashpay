@@ -1,41 +1,16 @@
-# Sa7hil Campaign — Public Website Starter
+# Sa7hil Campaign — Firebase ZIP
 
-This ZIP contains a GitHub Pages-ready static website with:
+Firebase project configured: `cashpay-61b07`.
 
-- Sa7hil branding/logo
-- Landing page
-- Login demo
-- Dashboard
-- Campaign creation
-- Unique public campaign links (`campaign.html?id=...`)
-- Copy/share/preview
-- Reports
-- Wallet UI with UPI/IMPS request placeholders
-- Profile
-- Admin panel UI
+## Setup
+1. Firebase Console → Authentication → enable Email/Password.
+2. Firebase Console → Firestore Database → create database.
+3. Review `firebase.rules.txt` and publish proper Security Rules.
+4. Upload all files to GitHub repository root.
+5. GitHub Pages → Deploy from `main` / root.
+6. `index.html` must remain in repository root.
 
-## GitHub Pages
+## Important
+The Firebase web config is intended for web apps and is not a server password. Security must come from Firebase Auth and Firestore Rules.
 
-Upload the contents of this folder to the **root** of your repository.
-
-GitHub:
-`Settings → Pages → Deploy from a branch → main → /(root)`
-
-The repository root must contain `index.html`.
-
-## Important for a REAL public launch
-
-The included site uses `localStorage` as a demo data layer. That means it is not a multi-user production backend.
-
-For a real public service, connect:
-
-- Firebase Authentication
-- Firestore
-- Firebase Storage (if needed)
-- Firebase Security Rules
-- Admin custom claims / server-side authorization
-- A proper payment gateway for UPI/IMPS verification
-
-Never credit wallet balances based only on browser JavaScript. Payment success must be verified server-side/webhook-side.
-
-The `admin.html` included here is a UI starter, not a secure production admin system until authentication/authorization is implemented.
+UPI/IMPS wallet crediting is NOT implemented as a fake client-side success flow. Real payments require a payment gateway and server/webhook verification.

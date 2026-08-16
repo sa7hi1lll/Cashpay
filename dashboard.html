@@ -1,16 +1,1 @@
-<!doctype html>
-<html lang="en">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Dashboard - Sa7hil</title><link rel="stylesheet" href="style.css"></head>
-<body>
-<header class="topbar"><a class="brand" href="dashboard.html"><img src="logo.png" alt="Sa7hil"><span>Sa7hil</span></a><nav><a href="campaigns.html">Campaigns</a><a href="reports.html">Reports</a><a href="wallet.html">Wallet</a><a href="profile.html">Profile</a></nav></header>
-<main class="container">
-<h1>Dashboard</h1><p class="muted">Campaign overview</p>
-<section class="grid stats">
-<div class="card"><b>Campaigns</b><strong id="dashCampaigns">0</strong></div>
-<div class="card"><b>Views</b><strong id="dashViews">0</strong></div>
-<div class="card"><b>Participants</b><strong id="dashParticipants">0</strong></div>
-<div class="card"><b>Wallet</b><strong id="dashWallet">₹0</strong></div>
-</section>
-<section class="card"><div class="row"><h2>Quick actions</h2><a class="btn" href="campaigns.html">+ New Campaign</a></div></section>
-</main><script src="script.js"></script>
-</body></html>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Dashboard - Sa7hil</title><link rel="stylesheet" href="style.css"></head><body><header class="topbar"><a class="brand" href="dashboard.html"><img src="logo.png"><span>Sa7hil</span></a><nav><a href="campaigns.html">Campaigns</a><a href="reports.html">Reports</a><a href="wallet.html">Wallet</a><a href="profile.html">Profile</a><a id="logout" href="#">Logout</a></nav></header><main class="container"><h1>Dashboard</h1><p id="email" class="muted"></p><section class="grid stats"><div class="card"><b>Campaigns</b><strong id="cc">0</strong></div><div class="card"><b>Views</b><strong id="vv">0</strong></div><div class="card"><b>Participants</b><strong id="pp">0</strong></div></section></main><script type="module">import{auth,onAuthStateChanged,signOut,db,collection,getDocs}from"./firebase.js";onAuthStateChanged(auth,async u=>{if(!u){location.href="login.html";return}email.textContent=u.email;const s=await getDocs(collection(db,"campaigns"));let c=0,v=0,p=0;s.forEach(d=>{const x=d.data();if(x.ownerId===u.uid){c++;v+=Number(x.views||0);p+=Number(x.participants||0)}});cc.textContent=c;vv.textContent=v;pp.textContent=p});logout.onclick=async e=>{e.preventDefault();await signOut(auth);location.href="index.html"};</script></body></html>
