@@ -1,17 +1,26 @@
-// Firestore rules starter — publish from Firebase Console after reviewing.
-// Do NOT use open read/write rules in production.
-//
-// Example starting point:
-// rules_version = '2';
-// service cloud.firestore {
-//   match /databases/{database}/documents {
-//     match /campaigns/{campaignId} {
-//       allow read: if true;
-//       allow create: if request.auth != null && request.resource.data.ownerId == request.auth.uid;
-//       allow update, delete: if request.auth != null && resource.data.ownerId == request.auth.uid;
-//     }
-//   }
-// }
-//
-// For production, tighten public reads to approved/active campaigns and
-// use custom admin claims for moderation.
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /campaigns/{campaignId} {
+      // Public users may read campaigns.
+      allow read: if true;
+
+      // Signed-in users can create their own campaigns.
+      allow create: if request.auth != null
+                    && request.resource.data.ownerId == request.auth.uid;
+
+      // Owner can update their own campaign, but admin can moderate.
+      allow update: if request.auth != null
+                    && (
+                      resource.data.ownerId == request.auth.uid
+                      || request.auth.token.admin == true
+                    );
+
+      allow delete: if request.auth != null
+                    && (
+                      resource.data.ownerId == request.auth.uid
+                      || request.auth.token.admin == true
+                    );
+    }
+  }
+}

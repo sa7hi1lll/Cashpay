@@ -1,8 +1,63 @@
 <!doctype html>
 <html lang="en">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Admin Panel - Sa7hil</title><link rel="stylesheet" href="style.css"></head>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Admin Panel - Sa7hil</title><link rel="stylesheet" href="style.css"></head>
 <body>
-<header class="topbar"><a class="brand" href="admin.html"><img src="logo.png" alt="Sa7hil"><span>Sa7hil Admin</span></a><nav><a href="index.html">Public Site</a></nav></header>
-<main class="container"><h1>Admin Panel</h1><div class="notice">Demo admin interface. For a real public launch, protect this page with Firebase Authentication, custom claims and Firestore Security Rules.</div>
-<section class="grid stats"><div class="card"><b>Users</b><strong id="aUsers">0</strong></div><div class="card"><b>Campaigns</b><strong id="aCampaigns">0</strong></div><div class="card"><b>Pending Payments</b><strong id="aPayments">0</strong></div></section>
-<section class="card"><h2>Campaign moderation</h2><div id="adminCampaigns"></div></section></main><script src="script.js"></script></body></html>
+<header class="topbar">
+<a class="brand" href="admin.html"><img src="logo.png" alt="Sa7hil"><span>Sa7hil Admin</span></a>
+<nav><a href="dashboard.html">Dashboard</a><a href="index.html">Public Site</a><a href="#" id="logout">Logout</a></nav>
+</header>
+<main class="container">
+<h1>Admin Panel 👑</h1>
+<p id="adminEmail" class="muted">Checking admin access...</p>
+<div class="notice">Admin access is controlled by Firebase custom claims. Set <code>admin: true</code> on the authorized user's ID token from a trusted server/Admin SDK.</div>
+
+<section class="grid stats">
+<div class="card"><b>Campaigns</b><strong id="campaignCount">0</strong></div>
+<div class="card"><b>Pending</b><strong id="pendingCount">0</strong></div>
+<div class="card"><b>Approved</b><strong id="approvedCount">0</strong></div>
+<div class="card"><b>Total Views</b><strong id="viewCount">0</strong></div>
+</section>
+
+<section class="card">
+<h2>Campaign Moderation</h2>
+<div id="campaigns">Loading...</div>
+</section>
+</main>
+
+<script type="module">
+import {auth,onAuthStateChanged,signOut,db,collection,getDocs,doc,updateDoc} from "./firebase.js";
+const esc=s=>String(s??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;");
+let all=[];
+onAuthStateChanged(auth,async user=>{
+ if(!user){location.href="login.html";return}
+ adminEmail.textContent="Signed in: "+user.email;
+ try{
+   const token=await user.getIdTokenResult(true);
+   if(token.claims.admin!==true){
+     campaigns.innerHTML='<div class="notice">Access denied. This account does not have the Firebase <code>admin</code> custom claim.</div>';
+     return;
+   }
+   await load();
+ }catch(e){campaigns.innerHTML='<div class="notice">'+esc(e.message)+'</div>'}
+});
+async function load(){
+ const snap=await getDocs(collection(db,"campaigns"));
+ all=[]; snap.forEach(d=>all.push({id:d.id,...d.data()}));
+ campaignCount.textContent=all.length;
+ pendingCount.textContent=all.filter(x=>(x.status||"Pending")==="Pending").length;
+ approvedCount.textContent=all.filter(x=>x.status==="Approved").length;
+ viewCount.textContent=all.reduce((n,x)=>n+Number(x.views||0),0);
+ campaigns.innerHTML=all.length?all.map(c=>`<article class="card">
+ <h3>${esc(c.name)}</h3><p>${esc(c.description)}</p>
+ <p>Status: <b>${esc(c.status||"Pending")}</b> · Views: ${Number(c.views||0)} · Participants: ${Number(c.participants||0)}</p>
+ <button class="btn" onclick="setStatus('${c.id}','Approved')">Approve</button>
+ <button class="btn secondary" onclick="setStatus('${c.id}','Rejected')">Reject</button>
+ </article>`).join(""):"No campaigns found.";
+}
+window.setStatus=async(id,status)=>{
+ try{await updateDoc(doc(db,"campaigns",id),{status});await load()}catch(e){alert(e.message)}
+};
+logout.onclick=async e=>{e.preventDefault();await signOut(auth);location.href="index.html"};
+</script>
+</body></html>
