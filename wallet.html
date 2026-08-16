@@ -1,0 +1,8 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Wallet - Sa7hil</title><link rel="stylesheet" href="style.css"></head>
+<body>
+<header class="topbar"><a class="brand" href="dashboard.html"><img src="logo.png" alt="Sa7hil"><span>Sa7hil</span></a><nav><a href="dashboard.html">Dashboard</a><a href="campaigns.html">Campaigns</a><a href="reports.html">Reports</a><a class="active" href="wallet.html">Wallet</a><a href="profile.html">Profile</a></nav></header>
+<main class="container"><h1>Wallet</h1><section class="card wallet"><p>Available balance</p><strong id="walletBalance">₹0</strong></section>
+<section class="card"><h2>Add Money</h2><p class="muted">UPI/IMPS payment verification must be handled by a secure payment gateway/backend before funds are credited.</p><input id="amount" type="number" placeholder="Amount ₹"><button class="btn" onclick="createPaymentRequest('UPI')">Request UPI</button> <button class="btn secondary" onclick="createPaymentRequest('IMPS')">Request IMPS</button></section>
+<section class="card"><h2>Transactions</h2><div id="transactions"></div></section></main><script src="script.js"></script></body></html>

@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Campaigns - Sa7hil</title><link rel="stylesheet" href="style.css"></head>
+<body>
+<header class="topbar"><a class="brand" href="dashboard.html"><img src="logo.png" alt="Sa7hil"><span>Sa7hil</span></a><nav><a href="dashboard.html">Dashboard</a><a class="active" href="campaigns.html">Campaigns</a><a href="reports.html">Reports</a><a href="wallet.html">Wallet</a><a href="profile.html">Profile</a></nav></header>
+<main class="container">
+<div class="row"><div><h1>Campaigns</h1><p class="muted">Create a public campaign and generate a shareable link.</p></div><button class="btn" onclick="toggle('createBox')">+ New Campaign</button></div>
+<section id="createBox" class="card hidden">
+<h2>Create Campaign</h2>
+<input id="cName" placeholder="Campaign name">
+<textarea id="cDescription" placeholder="Description"></textarea>
+<input id="cCategory" placeholder="Category">
+<input id="cGoal" type="number" placeholder="Goal amount ₹">
+<input id="cImage" placeholder="Image URL (optional)">
+<button class="btn" onclick="createCampaign()">Create & Generate Link</button>
+</section>
+<section id="campaignList" class="grid"></section>
+</main><script src="script.js"></script></body></html>
