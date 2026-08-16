@@ -16,4 +16,5 @@ The Firebase web config is intended for web apps and is not a server password. S
 UPI/IMPS wallet crediting is implemented as a fake client-side success flow. Real payments require a payment gateway and server/webhook verification.
 Send payment system 
 create a new account system 
-otp verify system 
+otp verify system+OTP 
+mobile verification otp
